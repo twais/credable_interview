@@ -15,7 +15,7 @@ jobs:
   build-and-test-project:
     working_directory: *service_working_directory
     docker:
-      - image: circleci/python:3.12
+      - image: circleci/python:3.13.2
 
     steps:
       - checkout
