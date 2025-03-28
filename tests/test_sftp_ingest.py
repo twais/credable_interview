@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from tasks.sftp_ingest import SFTPIngest
 
 
 class TestSFTPIngest(unittest.TestCase):
