@@ -3,15 +3,19 @@
 ## Getting Started 
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+## Important notes
+- For the purposes of this assessment, I am using a public and trial [SFTP server](https://sftpcloud.io/tools/free-sftp-server). Trial expires in 7 days
+
+- SFTP credentials are available on the installing and running on your dev environment section and should be exported as environment variables. (Ideally, these should be shared securely)
+
+- The data used for this assessment is Common Vulnerability Exposure (CVE) data, the data might not be accurate, but follows the format intended for this purpose.
+
 ### Prerequisites
 Ensure that you have the following installed on your local machine
 
 ```
 python 3.x
-pip3
-docker
-docker-compose
-mysql
 ```
 
 ### Installing and running on your dev environment
@@ -20,6 +24,13 @@ A step by step series of how to get a development env running
 
 The steps are as follows
 
+Create and activate a virtual environment: 
+```
+virtualenv credable
+source credable/bin/activate
+```
+
+Clone project, install dependencies and export required environment variables
 ```
 [clone](https://github.com/twais/credable_interview.git) the git repo 
 cd into the parent directory (credable_interview)
@@ -28,12 +39,13 @@ export SFTP_USERNAME=credable_test
 export SFTP_HOST=us-east-1.sftpcloud.io
 export SFTP_PASSWORD=yzxc6YiQVRph8oCzAY1bimHx0fRAb7Jz
 ```
-To run the pipeline:
+
+Run the pipeline:
 ```
 python pipeline.py cve_large_list.csv
 ```
 
-To run the API:
+On a separate command line, run the API:
 ```
 uvicorn tasks.api:app --reload
 ```
