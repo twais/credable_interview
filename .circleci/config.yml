@@ -1,7 +1,10 @@
 version: 2.1
+
+# Reusable configuration
 references:
-  working_directory: &service_working_directory
-    ~/credable
+  working_directory: &service_working_directory ~/credable
+  python_image: &python_image circleci/python:3.8.12-buster  # Pinned version
+  system_deps: &system_deps "python3-dev libpq-dev gcc build-essential"
 
 # Workflows
 workflows:
@@ -15,33 +18,46 @@ jobs:
   build-and-test-project:
     working_directory: *service_working_directory
     docker:
-      - image: circleci/python:3.8
+      - image: *python_image
 
     steps:
       - checkout
+
+      # Install system-level dependencies first
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y << parameters.system_deps >>
+          parameters:
+            system_deps: *system_deps
+
+      # Restore cache if available
       - restore_cache:
-          key: deps2-{{ checksum "tasks/requirements.txt" }}
+          keys:
+            - deps2-{{ checksum "tasks/requirements.txt" }}-{{ checksum "setup.py" }}  # Include setup.py if you have one
+            - deps2-  # Fallback to any cache if exact match not found
+
+      # Single cohesive virtualenv setup step
       - run:
-          name: Set Up virtualenv
+          name: Set up Python environment
           command: |
-            python3 -m venv venv
+            python -m venv venv
             . venv/bin/activate
-            pip install --upgrade pip
-            pip install --upgrade setuptools wheel
-            pip install -r tasks/requirements.txt
-      - run:
-          name: Check installed versions
-          command: |
-            . venv/bin/activate
-            pip --version
-            python --version
-            pip list
+            pip install --upgrade pip setuptools wheel
+            pip install -r tasks/requirements.txt -vvv  # Verbose logging
+
+      # Save cache if changed
       - save_cache:
-          key: deps2-{{ checksum "tasks/requirements.txt" }}
+          key: deps2-{{ checksum "tasks/requirements.txt" }}-{{ checksum "setup.py" }}
           paths:
-            - 'venv'
+            - "venv"
+            - "/usr/local/bin"  # For globally installed tools
+
+      # Run tests with proper Python path
       - run:
           name: Run tests
           command: |
             . venv/bin/activate
-            pytests -v
+            export PYTHONPATH="${PYTHONPATH}:$(pwd)"  # Ensure local imports work
+            pytest -v
