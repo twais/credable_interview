@@ -36,17 +36,3 @@ jobs:
           command: |
             . venv/bin/activate
             pytests -v tests/
-
-    working_directory: *service_working_directory
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 19.03.13
-      - run:
-          name: Build and push docker image
-          command: |
-            docker build -t $DOCKER_USERNAME/eventsafrique:latest .
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push $DOCKER_USERNAME/eventsafrique:latest
