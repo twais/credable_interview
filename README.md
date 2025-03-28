@@ -9,7 +9,24 @@ These instructions will get you a copy of the project up and running on your loc
 
 - SFTP credentials are available on the installing and running on your dev environment section and should be exported as environment variables. (Ideally, these should be shared securely)
 
-- The data used for this assessment is Common Vulnerability Exposure (CVE) data, the data might not be accurate, but follows the format intended for this purpose.
+- The data used for this assessment is Common Vulnerability Exposure (CVE) data, the data might not be accurate, but follows the format intended for this purpose. Below is a sample head of the file consiting of duplicates and blank lines as well:
+```
+CVE Number,Description,Discovery Date
+CVE-2013-98377,Vulnerability in ABC software allows cross-site scripting.,2018-02-25
+CVE-2025-24009,Vulnerability in PQR software allows SQL injection.,2020-09-10
+
+CVE-2024-63917,Vulnerability in MNO software allows denial of service.,2019-04-10
+CVE-2014-8359,Vulnerability in MNO software allows SQL injection.,2016-03-26
+
+CVE-2005-69506,Vulnerability in ABC software allows denial of service.,2013-07-02
+CVE-2005-69506,Vulnerability in ABC software allows denial of service.,2013-07-02
+
+
+CVE-2019-8977,Vulnerability in JKL software allows denial of service.,2015-12-12
+CVE-2016-75177,Vulnerability in PQR software allows denial of service.,2013-07-12
+CVE-2005-69506,Vulnerability in ABC software allows denial of service.,2013-07-02
+CVE-2013-16985,Vulnerability in DEF software allows denial of service.,2010-09-20
+```
 
 ### Prerequisites
 Ensure that you have the following installed on your local machine
@@ -32,7 +49,7 @@ source credable/bin/activate
 
 Clone project, install dependencies and export required environment variables
 ```
-[clone](https://github.com/twais/credable_interview.git) the git repo 
+clone https://github.com/twais/credable_interview.git the git repo 
 cd into the parent directory (credable_interview)
 pip install -r tasks/requirements.txt
 export SFTP_USERNAME=credable_test
