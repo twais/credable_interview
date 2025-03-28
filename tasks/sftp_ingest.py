@@ -26,7 +26,7 @@ class SFTPIngest:
         """
 
         try:
-            # Check if the local directory exists, if not create it
+            # Create local directory if not exists
             if not os.path.exists(local_dir):
                 os.makedirs(local_dir)
             # Get only csv file with specified name
