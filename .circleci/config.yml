@@ -29,6 +29,13 @@ jobs:
             pip install --upgrade pip
             pip install --upgrade setuptools wheel
             pip install -r tasks/requirements.txt
+      - run:
+          name: Check installed versions
+          command: |
+            . venv/bin/activate
+            pip --version
+            python --version
+            pip list
       - save_cache:
           key: deps2-{{ checksum "tasks/requirements.txt" }}
           paths:
