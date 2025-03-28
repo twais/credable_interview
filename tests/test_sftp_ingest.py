@@ -28,32 +28,32 @@ class TestSFTPIngest(unittest.TestCase):
 
     def test_get_files(self):
         # Mock the behavior of get_files
-        self.mock_sftp_ingest.get_files.return_value = ["file1.csv", "file2.csv"]
-        self.sftp_ingest.get_files("/remote_dir", "/local_dir")
+        self.mock_sftp_ingest.get_files.return_value = True
+        self.sftp_ingest.get_files("/remote_dir", "/local_dir", "test.csv")
         self.mock_sftp_ingest.get_files.assert_called_once_with(
-            "/remote_dir", "/local_dir"
+            "/remote_dir", "/local_dir", "test.csv"
         )
         self.assertEqual(
-            self.sftp_ingest.get_files("/remote_dir", "/local_dir"),
-            ["file1.csv", "file2.csv"],
+            self.sftp_ingest.get_files("/remote_dir", "/local_dir", "test.csv"),
+            True,
         )
 
     def test_get_files_file_not_found(self):
         # Mock behavior of get_files when FileNotFoundError is raised
         self.mock_sftp_ingest.get_files.side_effect = FileNotFoundError
         with self.assertRaises(FileNotFoundError):
-            self.sftp_ingest.get_files("/remote_dir", "/local_dir")
+            self.sftp_ingest.get_files("/remote_dir", "/local_dir", "test.csv")
         # verify that mocked method was called with the correct arguments
         self.mock_sftp_ingest.get_files.assert_called_once_with(
-            "/remote_dir", "/local_dir"
+            "/remote_dir", "/local_dir", "test.csv"
         )
 
     def test_get_files_exception(self):
         # Mock behavior of get_files when exception is raised
         self.mock_sftp_ingest.get_files.side_effect = Exception
         with self.assertRaises(Exception):
-            self.sftp_ingest.get_files("/remote_dir", "/local_dir")
+            self.sftp_ingest.get_files("/remote_dir", "/local_dir", "test.csv")
         # verify that mocked method was called with the correct arguments
         self.mock_sftp_ingest.get_files.assert_called_once_with(
-            "/remote_dir", "/local_dir"
+            "/remote_dir", "/local_dir", "test.csv"
         )
