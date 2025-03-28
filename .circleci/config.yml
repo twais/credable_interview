@@ -16,6 +16,9 @@ jobs:
     working_directory: *service_working_directory
     docker:
       - image: circleci/python:3.13.2
+      - auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKERHUB_PASSWORD
 
     steps:
       - checkout
